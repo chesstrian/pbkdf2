@@ -7,8 +7,10 @@ module.exports = (algorithm = 'sha1', password, salt, iterations, key_length = '
   unless typeof key_length is 'number' and key_length >= 0
     throw new TypeError 'Invalid key length'
 
-  password = if not Buffer.isBuffer password then new Buffer password, 'binary' else password
-  salt = if not Buffer.isBuffer salt then new Buffer salt, 'binary' else salt
+  unless Buffer.isBuffer password
+    password = new Buffer password, 'binary'
+  unless Buffer.isBuffer salt
+    salt = new Buffer salt, 'binary'
 
   hash = crypto.createHmac(algorithm, password).update('').digest 'binary'
   block_count = Math.ceil key_length / hash.length
@@ -26,6 +28,6 @@ module.exports = (algorithm = 'sha1', password, salt, iterations, key_length = '
       for k in [0..last.length - 1]
         xor_sum[k] ^= last[k]
 
-      output += xor_sum.toString 'binary'
+    output += xor_sum.toString 'binary'
 
-  output.substr(0, key_length)
+  output.substr 0, key_length

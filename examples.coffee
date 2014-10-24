@@ -1,7 +1,6 @@
 crypto = require 'crypto'
-pbkdf2 = require './pbkdf2'
+pbkdf2 = require './index'
 
-algorithm = 'sha1'
 password = 'myPassword'
 salt = '呀'
 iterations = 10000
@@ -13,6 +12,6 @@ console.timeEnd 'crypto'
 console.log crypto_result
 
 console.time 'pbkdf2'
-pbkdf2_result = pbkdf2 algorithm, password, salt, iterations, key_length
+pbkdf2_result = pbkdf2 null, password, salt, iterations, key_length
 console.timeEnd 'pbkdf2'
 console.log pbkdf2_result
